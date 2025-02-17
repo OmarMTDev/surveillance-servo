@@ -12,6 +12,6 @@
 *.pyc
 *.swp
 *.db
-.yaml
+/src/scripts/
 
 # End of https://www.toptal.com/developers/gitignore/api/deno
