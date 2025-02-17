@@ -6,6 +6,8 @@ import {getDaysByStatus} from "./filterData.ts";
 const preprod_logs_path = 'src/reports/twilio_jobs_preprod.json';
 const production_logs_path = 'src/reports/twilio_jobs_prod.json';
 
+console.log('Report made at: ', new Date().toDateString())
+
 
 const completedPre = getDaysByStatus(await extractDataFromFile(preprod_logs_path), "COMPLETED");
 console.log(`PreProd-Completed: ${completedPre.length}, List:` , completedPre);
@@ -32,11 +34,7 @@ export const db = new Database("migrations_advance.db");
 
 
 const rows = db.prepare(`SELECT * FROM daily_updates WHERE migration_date == date('now')`).all();
-console.log("Advances:");
-
-const last: number = rows.length;
-
-    console.log(rows);
+console.log("Advances:", rows);
 
 db.close();
 
