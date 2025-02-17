@@ -6,12 +6,14 @@
 /.vscode/
 
 /node_modules
+/src/reports
+/src/scripts
 
 .env
 *.orig
 *.pyc
 *.swp
 *.db
-/src/scripts/
+
 
 # End of https://www.toptal.com/developers/gitignore/api/deno
