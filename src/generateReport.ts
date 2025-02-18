@@ -1,5 +1,14 @@
-const DAYS_PROD = 977;
-const DAYS_PREP = 978;
+const FIRST_DAY_PROD = new Date("2022-06-16T00:00:00.000Z").getTime();
+const FIRST_DAY_PREP = new Date("2022-06-15T00:00:00.000Z").getTime();
+
+const DAYS_PROD = Math.ceil(
+  (new Date().getTime() - FIRST_DAY_PROD) /
+    (1000 * 60 * 60 * 24),
+);
+const DAYS_PREP = Math.ceil(
+  (new Date().getTime() - FIRST_DAY_PREP) /
+    (1000 * 60 * 60 * 24),
+);
 
 export async function generateReport(
   migratedDaysPrep: number,
@@ -8,12 +17,16 @@ export async function generateReport(
   listPreprod: string[],
   totalProd: number,
   totalPrep: number,
+  scheduledPrep: number,
+  scheduledProd: number,
 ) {
   const datofRep = `Report made at: ${new Date().toDateString()}`;
 
   console.log(migratedDaysPrep, migratedDaysProd, listProd, listPreprod);
   await Deno.writeTextFile(
-    "src/twilioReport.html",
+    `src/reports/${new Date().getFullYear()}_${new Date().getUTCMonth() + 1}_${
+      new Date().getDate()
+    }-migrationsReport.pdf`,
     `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -247,24 +260,32 @@ export async function generateReport(
 
                 <div class="adv-info">
                     <h3>Advance in Production:</h3>
-                    <b class="kpi perc">${Number(totalProd/DAYS_PROD*100).toFixed(2)}%</b>
+                    <b class="kpi perc">${
+      Number(totalProd / DAYS_PROD * 100).toFixed(2)
+    }%</b>
                 </div>
             </div>
 
             <div class="subcardC">
                 <div class="adv-info">
                     <h3>Missing days in Production:</h3>
-                    <b class="missDaysProd">${DAYS_PROD-totalProd}</b>
+                    <b class="missDaysProd">${DAYS_PROD - totalProd}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Scheduled Jobs</h3>
-                    <b class="kpi"></b>
+                    <b class="kpi">${scheduledProd}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b class="kpi"></b>
+                    <b class="kpi">${
+      new Date(
+        new Date().getTime() +
+          Math.ceil((DAYS_PROD - totalProd) / migratedDaysProd) * 1000 * 60 *
+            60 * 24,
+      ).toDateString()
+    }</b>
                 </div>
             </div>
         </div>
@@ -286,24 +307,32 @@ export async function generateReport(
 
                 <div class="adv-info">
                     <h3>Advance in Preproduction:</h3>
-                    <b class="kpi perc">${Number(totalPrep/DAYS_PREP*100).toFixed(2)}% </b>
+                    <b class="kpi perc">${
+      Number(totalPrep / DAYS_PREP * 100).toFixed(2)
+    }% </b>
                 </div>
             </div>
 
             <div class="subcardC">
                 <div class="adv-info">
                     <h3>Missing days in Preproduction:</h3>
-                    <b class="missDaysPrep">${DAYS_PREP-totalPrep}</b>
+                    <b class="missDaysPrep">${DAYS_PREP - totalPrep}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Scheduled Jobs</h3>
-                    <b class="kpi"></b>
+                    <b class="kpi">${scheduledPrep}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b class="kpi"></b>
+                    <b class="kpi">${
+      new Date(
+        new Date().getTime() +
+          Math.ceil((DAYS_PREP - totalPrep) / migratedDaysPrep) * 1000 * 60 *
+            60 * 24,
+      ).toDateString()
+    }</b>
                 </div>
             </div>
         </div>

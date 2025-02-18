@@ -1,8 +1,7 @@
 import { extractDataFromFile } from "./extractFromFile.ts";
 import { getDaysByStatus } from "./filterData.ts";
 import { generateReport } from "./generateReport.ts";
-import {getLastMigratedDays, insertMigrationRecord} from "./dbCalls.ts";
-
+import { getLastMigratedDays, insertMigrationRecord } from "./dbCalls.ts";
 
 const preprod_logs_path = "src/reports/twilio_jobs_preprod.json";
 const production_logs_path = "src/reports/twilio_jobs_prod.json";
@@ -34,7 +33,7 @@ const finishedPro = getDaysByStatus(
 );
 console.log(`Production-Finished: ${finishedPro.length}, List:`, finishedPro);
 
-export const listProd: Array<string> = [...completedPro, ...completedPre];
+export const listProd: Array<string> = [...completedPro, ...finishedPro];
 
 export const listPreprod: Array<string> = [...completedPre, ...finishedPre];
 
@@ -44,12 +43,32 @@ export const totalPrep = completedPre.length + finishedPre.length || 999;
 console.log("Advance from Production: ", totalProd);
 console.log("Advance from PreProduction: ", totalPrep);
 
+const scheduledPrep = getDaysByStatus(
+  extractDataFromFile(preprod_logs_path),
+  "SCHEDULED",
+);
+const scheduledProd = getDaysByStatus(
+  extractDataFromFile(production_logs_path),
+  "SCHEDULED",
+);
 
 const migrationsCheck = getLastMigratedDays();
 insertMigrationRecord(migrationsCheck, totalPrep, totalProd);
 
-const {migrated_in_prod, migrated_in_prep, total_in_production, total_in_preprod} = getLastMigratedDays();
+const {
+  migrated_in_prod,
+  migrated_in_prep,
+  total_in_production,
+  total_in_preprod,
+} = getLastMigratedDays();
 
-
-
-await generateReport(migrated_in_prep, migrated_in_prod, listProd, listPreprod, total_in_production, total_in_preprod);
+await generateReport(
+  migrated_in_prep,
+  migrated_in_prod,
+  listProd,
+  listPreprod,
+  total_in_production,
+  total_in_preprod,
+  scheduledProd.length,
+  scheduledPrep.length,
+);
