@@ -1,17 +1,15 @@
 class Data {
-    startDay: string;
-    status: string;
+  startDay!: string;
+  status!: string;
 }
 
-export function getDaysByStatus (data: Data[], jobStatus: string): string[]{
-    let result =[] ;
-    data.forEach((entry: Data)=> {
-        if (entry.status === jobStatus){
-            result.push(entry.startDay);
-        }
-       });
+export function getDaysByStatus(data: Data[], jobStatus: string): string[] {
+  let result: string[] = [];
+  data.forEach((entry: Data) => {
+    if (entry.status === jobStatus) {
+      result.push(entry.startDay);
+    }
+  });
 
-   return result;
+  return result;
 }
-
-
