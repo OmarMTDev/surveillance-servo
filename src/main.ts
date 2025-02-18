@@ -48,8 +48,8 @@ console.log("Advance from PreProduction: ", totalPrep);
 const migrationsCheck = getLastMigratedDays();
 insertMigrationRecord(migrationsCheck, totalPrep, totalProd);
 
-const {migrated_in_prod, migrated_in_prep} = getLastMigratedDays();
+const {migrated_in_prod, migrated_in_prep, total_in_production, total_in_preprod} = getLastMigratedDays();
 
 
 
-await generateReport(migrated_in_prep, migrated_in_prod, listProd, listPreprod);
+await generateReport(migrated_in_prep, migrated_in_prod, listProd, listPreprod, total_in_production, total_in_preprod);

@@ -1,8 +1,13 @@
+const DAYS_PROD = 977;
+const DAYS_PREP = 978;
+
 export async function generateReport(
   migratedDaysPrep: number,
   migratedDaysProd: number,
   listProd: string[],
   listPreprod: string[],
+  totalProd: number,
+  totalPrep: number,
 ) {
   const datofRep = `Report made at: ${new Date().toDateString()}`;
 
@@ -19,6 +24,7 @@ export async function generateReport(
         body {
             display: grid;
         }
+        
 
         section {
             border-bottom: gray solid 1px;
@@ -78,12 +84,51 @@ export async function generateReport(
             font-size: 2em;
         }
 
-        div.adv-info>b {
+        b.kpi {
             font-size: 1.2em;
             height: 1em;
             align-self: center;
             margin-left: 1em;
+         }  
+         
+         .perc {
+         text-decoration: underline;
+         color: blue;
+         } 
+         
+         div.adv-info>b.advDaysProd {
+            font-size: 1.2em;
+            height: 1em;
+            align-self: center;
+            margin-left: 1em;
+            color: green !important;
+         }   
+         div.adv-info>b.advDaysPrep {
+            font-size: 1.2em;
+            height: 1em;
+            align-self: center;
+            margin-left: 1em;
+            color: green !important;
+         }   
+         
+        
+       
+        
+        div.adv-info>b.missDaysProd {
+        color: darkred !important;
+        font-size: 1.2em;
+            height: 1em;
+            align-self: center;
+            margin-left: 1em;
         }
+        div.adv-info>b.missDaysPrep {
+        color: darkred !important;
+        font-size: 1.2em;
+            height: 1em;
+            align-self: center;
+            margin-left: 1em;
+        }
+        
 
         .adv-info {
             display: flex;
@@ -132,6 +177,8 @@ export async function generateReport(
             width: 70px;
             height: 70px;
         }
+        
+        
     </style>
 </head>
 
@@ -185,78 +232,78 @@ export async function generateReport(
     <div class="card-container-foot">
         <div class="card-adv">
             <div class="tit">
-                <h2>Advance</h2>
+                <h2>Advance Production</h2>
             </div>
             <div class="subcardC">
                 <div class="adv-info">
                     <h3>Days advanced in Production:</h3>
-                    <b id="advDaysProd">9</b>
+                    <b class="advDaysProd">${migratedDaysProd}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Days migrated in Production:</h3>
-                    <b id="migDaysProd">730</b>
+                    <b class="kpi">${totalProd}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Advance in Production:</h3>
-                    <b id="percAdvProd">70% </b>
+                    <b class="kpi perc">${Number(totalProd/DAYS_PROD*100).toFixed(2)}%</b>
                 </div>
             </div>
 
             <div class="subcardC">
                 <div class="adv-info">
                     <h3>Missing days in Production:</h3>
-                    <b id="missDaysProd">9</b>
+                    <b class="missDaysProd">${DAYS_PROD-totalProd}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Scheduled Jobs</h3>
-                    <b id="schedDaysProd">730</b>
+                    <b class="kpi"></b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b id="etaProd">11-3-2025</b>
+                    <b class="kpi"></b>
                 </div>
             </div>
         </div>
 
         <div class="card-adv">
             <div class="tit">
-                <h2>Advance</h2>
+                <h2>Advance PreProd</h2>
             </div>
             <div class="subcardC">
                 <div class="adv-info">
-                    <h3>Days advanced in Production:</h3>
-                    <b id="advDaysPrep">9</b>
+                    <h3>Days advanced in Preproduction:</h3>
+                    <b class="advDaysPrep">${migratedDaysPrep}</b>
                 </div>
 
                 <div class="adv-info">
-                    <h3>Days migrated in Production:</h3>
-                    <b id="migDaysPrep">730</b>
+                    <h3>Days migrated in Preproduction:</h3>
+                    <b class="kpi">${totalPrep}</b>
                 </div>
 
                 <div class="adv-info">
-                    <h3>Advance in Production:</h3>
-                    <b id="percAdvPrep">70% </b>
+                    <h3>Advance in Preproduction:</h3>
+                    <b class="kpi perc">${Number(totalPrep/DAYS_PREP*100).toFixed(2)}% </b>
                 </div>
             </div>
 
             <div class="subcardC">
                 <div class="adv-info">
-                    <h3>Missing days in Production:</h3>
-                    <b id="missDaysPrep">9</b>
+                    <h3>Missing days in Preproduction:</h3>
+                    <b class="missDaysPrep">${DAYS_PREP-totalPrep}</b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Scheduled Jobs</h3>
-                    <b id="schedDaysPrep">730</b>
+                    <b class="kpi"></b>
                 </div>
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b id="etaPrep">11-3-2025</b>
+                    <b class="kpi"></b>
                 </div>
             </div>
         </div>
