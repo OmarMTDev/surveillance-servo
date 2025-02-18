@@ -24,9 +24,9 @@ export async function generateReport(
 
   console.log(migratedDaysPrep, migratedDaysProd, listProd, listPreprod);
   await Deno.writeTextFile(
-    `src/reports/${new Date().getFullYear()}_${new Date().getUTCMonth() + 1}_${
+    `src/reports/${new Date().getFullYear()}-${new Date().getUTCMonth() + 1}-${
       new Date().getDate()
-    }-migrationsReport.pdf`,
+    }-migrationsReport.html`,
     `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -64,7 +64,7 @@ export async function generateReport(
         }
 
         .card {
-            box-shadow: 1px 1px 12px #2DC4ED;
+            box-shadow: 1px 1px 2px #2DC4ED;
             height: 35vh;
             width: max(303px, 50%);
             padding: 0.5em 1em;
@@ -75,7 +75,7 @@ export async function generateReport(
         }
 
         .card-adv {
-            box-shadow: 1px 1px 12px #0C548C;
+            box-shadow: 1px 1px 2px #2DC4ED;
             height: 35vh;
             width: max(340px, 50%);
             padding: 0.5em 1em;
@@ -128,14 +128,14 @@ export async function generateReport(
        
         
         div.adv-info>b.missDaysProd {
-        color: darkred !important;
+        color: red !important;
         font-size: 1.2em;
             height: 1em;
             align-self: center;
             margin-left: 1em;
         }
         div.adv-info>b.missDaysPrep {
-        color: darkred !important;
+        color: red !important;
         font-size: 1.2em;
             height: 1em;
             align-self: center;
@@ -197,7 +197,7 @@ export async function generateReport(
 
 <body>
     <section>
-        <img src="./tendril-logo.svg" alt="IMG" />
+        <img src="../tendril-logo.svg" alt="IMG" />
         <h1>Twilio Migrations Report </h1>
     </section>
     <div class="card-container">
