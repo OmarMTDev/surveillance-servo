@@ -1,7 +1,8 @@
-import { Database } from "jsr:@db/sqlite@0.11";
 import { extractDataFromFile } from "./extractFromFile.ts";
 import { getDaysByStatus } from "./filterData.ts";
 import { generateReport } from "./generateReport.ts";
+import {getLastMigratedDays, insertMigrationRecord} from "./dbCalls.ts";
+
 
 const preprod_logs_path = "src/reports/twilio_jobs_preprod.json";
 const production_logs_path = "src/reports/twilio_jobs_prod.json";
@@ -43,13 +44,12 @@ export const totalPrep = completedPre.length + finishedPre.length || 999;
 console.log("Advance from Production: ", totalProd);
 console.log("Advance from PreProduction: ", totalPrep);
 
-export const db = new Database("migrations_advance.db");
 
-const rows = db.prepare(
-  `SELECT * FROM daily_updates WHERE migration_date == date('now')`,
-).all();
-console.log("Advances:", rows);
+const migrationsCheck = getLastMigratedDays();
+insertMigrationRecord(migrationsCheck, totalPrep, totalProd);
 
-db.close();
+const {migrated_in_prod, migrated_in_prep} = getLastMigratedDays();
 
-await generateReport(totalPrep, totalProd, listProd, listPreprod);
+
+
+await generateReport(migrated_in_prep, migrated_in_prod, listProd, listPreprod);

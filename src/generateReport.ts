@@ -1,6 +1,6 @@
 export async function generateReport(
-  migratedDaysPrep: string,
-  migratedDaysProd: string,
+  migratedDaysPrep: number,
+  migratedDaysProd: number,
   listProd: string[],
   listPreprod: string[],
 ) {
@@ -266,18 +266,6 @@ export async function generateReport(
         <h2 id="dateRepo">${datofRep}</h2>
     </footer>
 </body>
-<script>
-
-
-    listPreprod.map((el) => {
-        const listCont = document.getElementById('listDaysPrep');
-        const day = document.createElement('li');
-        day.innerText = el;
-        listCont.appendChild(day);
-    })
-
-</script>
-
 </html>`,
   );
 }
