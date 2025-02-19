@@ -7,4 +7,11 @@ env:
   SECRET_STR: ${{secrets.url}}
 
 jobs:
-  run: test.sh
+  run_tests:
+    name: ShellTest
+    runs-on: ubuntu-latest
+    steps:
+        - uses: actions/checkout@v2
+        - name: Run script file
+          run: test.sh
+          shell: bash
