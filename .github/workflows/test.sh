@@ -15,6 +15,8 @@ parse_yaml() {
 }
 
 #!/bin/sh
+cd ..
+cd ..
 
 
 # read yaml file
