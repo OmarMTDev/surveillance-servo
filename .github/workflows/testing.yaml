@@ -6,4 +6,5 @@ on:
 env:
   SECRET_STR: ${{secrets.url}}
 
-run: test.sh
+jobs:
+  run: test.sh
