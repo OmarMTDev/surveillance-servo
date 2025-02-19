@@ -20,7 +20,16 @@ export async function generateReport(
   scheduledPrep: number,
   scheduledProd: number,
 ) {
-  const datofRep = `Report made at: ${new Date().toDateString()}`;
+  const datofRep = `Report made on: ${new Date().toDateString()}`;
+  const etaCalc = new Date(
+    new Date().getTime() +
+      Math.ceil(
+          (DAYS_PREP - totalPrep) /
+            (migratedDaysPrep + migratedDaysProd / 2),
+        ) *
+        1000 * 60 *
+        60 * 24,
+  ).toDateString();
 
   console.log(migratedDaysPrep, migratedDaysProd, listProd, listPreprod);
   await Deno.writeTextFile(
@@ -279,13 +288,7 @@ export async function generateReport(
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b class="kpi">${
-      new Date(
-        new Date().getTime() +
-          Math.ceil((DAYS_PROD - totalProd) / migratedDaysProd) * 1000 * 60 *
-            60 * 24,
-      ).toDateString()
-    }</b>
+                    <b class="kpi">${etaCalc}</b>
                 </div>
             </div>
         </div>
@@ -326,13 +329,7 @@ export async function generateReport(
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b class="kpi">${
-      new Date(
-        new Date().getTime() +
-          Math.ceil((DAYS_PREP - totalPrep) / migratedDaysPrep) * 1000 * 60 *
-            60 * 24,
-      ).toDateString()
-    }</b>
+                    <b class="kpi">${etaCalc}</b>
                 </div>
             </div>
         </div>
