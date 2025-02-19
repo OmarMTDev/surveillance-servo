@@ -1,0 +1,9 @@
+name: Run testing script
+
+on:
+  workflow_dispatch:
+
+env:
+  SECRET_STR: ${{secrets.url}}
+
+run: test.sh
