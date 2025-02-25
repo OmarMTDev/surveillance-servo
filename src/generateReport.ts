@@ -21,7 +21,7 @@ export async function generateReport(
   scheduledProd: number,
 ) {
   const datofRep = `Report made on: ${new Date().toDateString()}`;
-  const etaCalc = new Date(
+  const etaCalcPre = new Date(
     new Date().getTime() +
       Math.ceil(
           (DAYS_PREP - totalPrep) /
@@ -30,6 +30,16 @@ export async function generateReport(
         1000 * 60 *
         60 * 24,
   ).toDateString();
+
+    const etaCalcPro = new Date(
+        new Date().getTime() +
+        Math.ceil(
+            (DAYS_PREP - totalProd) /
+            (migratedDaysPrep + migratedDaysProd / 2),
+        ) *
+        1000 * 60 *
+        60 * 24,
+    ).toDateString();
 
   console.log(migratedDaysPrep, migratedDaysProd, listProd, listPreprod);
   await Deno.writeTextFile(
@@ -215,7 +225,7 @@ export async function generateReport(
                 <h2>Production</h2>
             </div>
             <div class="subcardA">
-                <h3>Days migrated in Production:</h3>
+                <h3>Days migrated on last day (Production):</h3>
                 <b id="numDaysProd">${migratedDaysProd}</b>
             </div>
             <div class="subcardB">
@@ -235,7 +245,7 @@ export async function generateReport(
                 <h2>PreProd</h2>
             </div>
             <div class="subcardA">
-                <h3>Days migrated in PreProduction:</h3>
+                <h3>Days migrated on last day (PreProduction):</h3>
                 <b id="numDaysPrep">${migratedDaysPrep}</b>
             </div>
             <div class="subcardB">
@@ -288,7 +298,7 @@ export async function generateReport(
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b class="kpi">${etaCalc}</b>
+                    <b class="kpi">${etaCalcPro}</b>
                 </div>
             </div>
         </div>
@@ -329,7 +339,7 @@ export async function generateReport(
 
                 <div class="adv-info">
                     <h3>Finish ETA:</h3>
-                    <b class="kpi">${etaCalc}</b>
+                    <b class="kpi">${etaCalcPre}</b>
                 </div>
             </div>
         </div>

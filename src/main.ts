@@ -69,6 +69,6 @@ await generateReport(
   listPreprod,
   total_in_production,
   total_in_preprod,
-  scheduledProd.length,
   scheduledPrep.length,
+  scheduledProd.length,
 );
