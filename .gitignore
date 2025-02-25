@@ -6,9 +6,8 @@
 /.vscode/
 
 /node_modules
-/src/reports
-/src/scripts
-
+/src/local
+.csv
 .env
 *.orig
 *.pyc
