@@ -4,26 +4,32 @@ on:
   workflow_dispatch:
 
   pull_request:
-    types: [ opened ]
+    types: [ closed ]
+
 
 jobs:
-    get_author:
+    get_pr_data:
+      permissions:
+        checks: write
+        contents: write
+        pull-requests: write
       runs-on: ubuntu-latest
       steps:
         - uses: actions/checkout@v4
         - name: Get Version
-          run: cat versions.json
+          run: |
+            cat versions.json
+            echo "## " || $(date + "%Y-%m-%d") >> autoDocs.md
 
         - name: Read and save version from JSON
           run: |
             repo=${{github.event.repository.name}}
-            sed -i "s|repoName|$repo|g" versionWrite.sh
+            sed -i "s|RepoName|$repo|g" versionWrite.sh
             bash versionWrite.sh
 
 
         - name: Write PR info
           run: |
-            echo "## $(date + "%Y-%m-%d")" >> autoDocs.md
             echo "* Pull Request: [#${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}](${{github.event.pull_request.html_url}})" >> autoDocs.md
             echo "* Issue: [#${{ github.event.issue.number }} ${{ github.event.issue.title }}](${{github.event.issue.html_url}})" >> autoDocs.md
             echo "* PR Author: ${{ github.event.pull_request.user.login }}" >> autoDocs.md
