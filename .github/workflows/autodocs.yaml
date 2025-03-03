@@ -1,4 +1,4 @@
-name: Closing PR action (testing)
+name: Documenting PR on close.
 
 on:
   workflow_dispatch:
@@ -15,7 +15,7 @@ jobs:
           run: cat versions.json
 
         - name: Read version from JSON
-          run: jq '.[] | .version' version.json
+          run: jq ' .version' versions.json
 
         - name: Get Author Name
           run: |
