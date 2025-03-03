@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
   pull_request:
-    types: [ closed ]
+    types: [ opened ]
 
 jobs:
     get_author:
@@ -14,14 +14,20 @@ jobs:
         - name: Get Version
           run: cat versions.json
 
-        - name: Read version from JSON
-          run: jq ' .version' versions.json
-
-        - name: Get Author Name
+        - name: Read and save version from JSON
           run: |
-            echo "PR Author: ${{ github.event.pull_request.user.login }}" >> autoDocs.md
-            echo "{Author}=${{ github.event.pull_request.user.login }}" 
-            
-            echo "Pull Request: [\#${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}](${{github.event.pull_request.html_url}})" >> autoDocs.md
-            
+            repo=${{github.event.repository.name}}
+            sed -i "s|repoName|$repo|g" versionWrite.sh
+            bash versionWrite.sh
+
+
+        - name: Write PR info
+          run: |
+            echo "## $(date + "%Y-%m-%d")" >> autoDocs.md
+            echo "* Pull Request: [#${{ github.event.pull_request.number }} ${{ github.event.pull_request.title }}](${{github.event.pull_request.html_url}})" >> autoDocs.md
+            echo "* Issue: [#${{ github.event.issue.number }} ${{ github.event.issue.title }}](${{github.event.issue.html_url}})" >> autoDocs.md
+            echo "* PR Author: ${{ github.event.pull_request.user.login }}" >> autoDocs.md
+            echo "###" >> autoDocs.md
+            cat autoDocs.md
+
             
