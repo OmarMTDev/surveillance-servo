@@ -1,4 +1,4 @@
-import { Database } from "jsr:@db/sqlite@0.11";
+import { Database } from "jsr:@db/sqlite";
 
 class Advance {
   total_in_preprod!: number;
@@ -28,6 +28,7 @@ export function insertMigrationRecord(
   totalProd: number,
 ) {
   const db = new Database("migrations_advance.db");
+
   const { total_in_preprod, total_in_production } = migrationInfo;
 
   console.log(
@@ -37,11 +38,10 @@ export function insertMigrationRecord(
   const advanceInPre = total_in_preprod + totalPrep;
   const advanceInPro = total_in_production + totalProd;
 
-  const insert = db.prepare(
+  db.exec(
     `INSERT INTO daily_updates (migration_date, total_in_preprod , total_in_production , migrated_in_prep , migrated_in_prod, created_at ) VALUES (date('now'), ?, ? , ?, ?, date('now'))`,
+    [advanceInPre, advanceInPro, totalPrep, totalProd],
   );
-
-  insert.run(advanceInPre, advanceInPro, totalPrep, totalProd);
 
   db.close();
 }

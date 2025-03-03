@@ -31,15 +31,15 @@ export async function generateReport(
         60 * 24,
   ).toDateString();
 
-    const etaCalcPro = new Date(
-        new Date().getTime() +
-        Math.ceil(
-            (DAYS_PREP - totalProd) /
+  const etaCalcPro = new Date(
+    new Date().getTime() +
+      Math.ceil(
+          (DAYS_PREP - totalProd) /
             (migratedDaysPrep + migratedDaysProd / 2),
         ) *
         1000 * 60 *
         60 * 24,
-    ).toDateString();
+  ).toDateString();
 
   console.log(migratedDaysPrep, migratedDaysProd, listProd, listPreprod);
   await Deno.writeTextFile(
