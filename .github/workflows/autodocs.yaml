@@ -19,7 +19,6 @@ jobs:
 
         - name: Get Author Name
           run: |
-            cd reports
             echo "PR Author: ${{ github.event.pull_request.user.login }}" >> autoDocs.md
             echo "{Author}=${{ github.event.pull_request.user.login }}" 
             
