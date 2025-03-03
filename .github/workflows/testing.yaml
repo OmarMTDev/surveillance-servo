@@ -1,19 +1,18 @@
-name: Run testing servo
+name: Closing PR action (testing)
 
 on:
-  workflow_dispatch:
-
-env:
-  DB_URI_PP: ${{secrets.PP_URI}}
-  DB_URI_PR: ${{secrets.PR_URI}}
+  pull_request:
+    types: [ closed ]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: View PR author
-        run: echo "This PR is opened by ${{ github.event.issue.user.login }} ."
-
-
+    get_author:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Get Author Name
+          run: |
+            echo "PR Author: ${{ github.event.pull_request.user.login }}"
+            echo "::set-output name=author::${{ github.event.pull_request.user.login }}"
+          id: author_info
+        - name: show author name.
+          run: |
+            echo "the PR author was ${{ steps.author_info.outputs.author }}"
