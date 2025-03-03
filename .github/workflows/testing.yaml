@@ -8,11 +8,19 @@ jobs:
     get_author:
       runs-on: ubuntu-latest
       steps:
+        - uses: actions/checkout@v4
+        - name: Get Version
+          run: cat versions.json
+
+        - name: Read version from JSON
+          run: jq 'version' version.json
+
         - name: Get Author Name
           run: |
-            echo "PR Author: ${{ github.event.pull_request.user.login }}"
-            echo "::set-output name=author::${{ github.event.pull_request.user.login }}"
-          id: author_info
-        - name: show author name.
-          run: |
-            echo "the PR author was ${{ steps.author_info.outputs.author }}"
+            cd reports
+            echo "PR Author: ${{ github.event.pull_request.user.login }}" >> autoDocs.md
+            echo "{Author}=${{ github.event.pull_request.user.login }}" 
+            
+            echo "Pull Request: [${{ github.event.pull_request.title }}](${{github.event.pull_request.html_url}})" >> autoDocs.md
+            
+            
