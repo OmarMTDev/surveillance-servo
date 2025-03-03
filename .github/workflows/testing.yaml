@@ -1,0 +1,19 @@
+name: Run testing servo
+
+on:
+  workflow_dispatch:
+
+env:
+  DB_URI_PP: ${{secrets.PP_URI}}
+  DB_URI_PR: ${{secrets.PR_URI}}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: View PR author
+        run: echo "This PR is opened by ${{ github.event.issue.user.login }} ."
+
+
